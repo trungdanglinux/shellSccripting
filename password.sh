@@ -23,7 +23,7 @@ LENGTH=48
 
 while getopts vl:s OPTION
 do 
-   case  ${OPTION} in
+   case "${OPTION}" in
     v) 	
 	VERBOSE="true"
 	log "Verbose mode on."
@@ -39,6 +39,15 @@ do
 	;;
    esac
 done
+
+shift "$(( OPTIND - 1 ))"
+
+
+if [[ "${#}" -gt 0 ]]
+then 
+    usage
+fi
+
 
 log "Generating password!"
 
