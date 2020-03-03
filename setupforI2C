@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#This script will enable I2C and Install it
+
+#Check super user
+if [[ "$(id -u)" -ne 0 ]]
+then
+   echo "Run as a root or sudo."
+   exit 1
+fi
+
+#Enable i2c on Raspberry Pi
+
+echo "Enable I2C"
+
+if grep -q "i2c-bcm2708" /etc/modules
+then 
+   echo "i2c-bcm2708 exists already."
+else
+   echo "i2c-bcm2708" >> /etc/modules
+fi 
+
+if grep -q "i2c-dev" /etc/modules
+then 
+   echo "i2c-dev exists already."
+else
+   echo "i2c-dev" >> /etc/modules
+fi 
+
+#Enable i2c at boot time
+if grep -q "dtparam=i2c1=on" /boot/config.txt
+then 
+   echo "dtparam=i2c1=on exists already."
+else
+   echo "dtparam=i2c1=on" >> /boot/config.txt
+fi 
+
+if grep -q "dtparam=i2c_arm=on" /boot/config.txt
+then 
+   echo "dtparam=i2c_arm=on exists already."
+else
+   echo "dtparam=i2c_arm=on" >> /boot/config.txt
+fi 
+
+#Disable the black list of I2C module
+
+if [[ -f /etc/modprobe.d/raspi-blacklist.conf ]]
+then
+   sed -i "s/^blacklist spi-bcm2708/#blacklist spi-bcm2708/" /etc/modprobe.d/raspi-blacklist.conf
+   sed -i "s/^blacklist i2c-bcm2708/#blacklist i2c-bcm2708/" /etc/modprobe.d/raspi-blacklist.conf
+else
+  echo "The raspi-blacklist.conf does not exist."
+fi
+
+
+#Install i2c-tools
+
+echo "Install i2c-tools"
+
+if hash i2cget 2>/dev/null
+then
+  echo "i2c-tools was installed already"
+else
+  apt-get install -y i2c-tools
+fi
+
+#Check if the i2c modules exists in list of modules
+echo "Check if i2c module is enable"
+lsmod | grep i2c 
+
+echo "Detecting hardware with bus 1"
+
+i2cdetect -y 1
+
+
