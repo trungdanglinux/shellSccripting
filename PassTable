@@ -1,0 +1,12 @@
+#!/bin/bash
+
+##show the password table from /etc/passwd
+hyphen="=================================="
+align="%-30s %-10s %-10s %-10s %-20s %s"
+header="User_Name Password User_ID Group_ID Home_Directory Shell"
+printf "${align} \n" ${header}
+printf "%s\n" ${hyphen}${hyphen}${hyphen}
+while IFS=":" read name passwd userID groupID info home_dir shell_command
+do 
+    printf "${align} \n" ${name} ${passwd} ${userID} ${groupID} ${home_dir} ${shell_command}
+done < /etc/passwd
