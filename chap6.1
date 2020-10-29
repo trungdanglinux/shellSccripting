@@ -1,0 +1,25 @@
+#!/bin/bash
+
+##Exercise about Shell Function in Pro Bash Programming book.
+##Check if IP address is valid without IFS and using parameter expansion in exercice 1 chapter 6
+
+checkIP(){ 
+ case $1 in
+ "" | *[!0-9.]* | *[!0-9] ) return 1;;
+ 
+ esac
+ 
+ a=${1#*.}
+ b=${1%.*}
+ first=${1%%.*}
+ second=${a%%.*}
+ third=${b##*.}
+ last=${1##*.} 
+ 
+
+ [ ${#1} -eq $(( ${#first} + ${#second} + ${#third} + ${#last} + 3 )) ] && 
+ [ $first -le 255 ] && [ $second -le 255 ] &&
+ [ $third -le 255 ] && [ $last -le 255 ] 
+
+ 
+}
