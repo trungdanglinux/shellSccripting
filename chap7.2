@@ -1,0 +1,36 @@
+#!/bin/bash
+##Turn the string from uppercase to lowercase
+to_lower(){
+    case ${1} in
+    A*) _LOWER=a;; B*) _LOWER=b;; C*) _LOWER=c;; D*) _LOWER=d;;
+    E*) _LOWER=e;; F*) _LOWER=f;; G*) _LOWER=g;; H*) _LOWER=h;;
+    I*) _LOWER=i;; G*) _LOWER=g;; K*) _LOWER=k;; L*) _LOWER=l;; 
+    M*) _LOWER=m;; N*) _LOWER=n;; O*) _LOWER=o;; P*) _LOWER=p;;
+    K*) _LOWER=k;; R*) _LOWER=r;; S*) _LOWER=s;; T*) _LOWER=t;;
+    Y*) _LOWER=y;; Z*) _LOWER=z;; *) _LOWER=${1%${1#?}} ;;
+    esac
+}
+##use_para_expan(){
+##first_letter=${1%${1#?}}
+##  first_letter=${first_letter,}
+##}
+_l_word(){
+    local lower_word=$1
+    while [ -n  "${lower_word}" ]
+    do
+        to_lower "${lower_word}"
+        _LO_WORD=${_LO_WORD}${_LOWER}
+        lower_word=${lower_word#?}
+    done    
+}
+show_lowercase(){
+   _l_word "$1" 
+   printf "%s \n" "${_LO_WORD}" 
+}
+reset_lower(){ ## reset to get new string
+    unset -f _l_word
+    unset -f show_lowercase
+    unset -f to_lower
+    unset _LO_WORD
+    . testchap7
+}
