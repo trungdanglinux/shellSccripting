@@ -1,0 +1,11 @@
+#!/bin/bash
+## Find the longest verse in kjv
+
+awk -F"|" ' 
+length($0) - length($1) > max { 
+  max = length($0) - length($1)
+  verse=$0
+}
+END{
+  print verse
+}' ~/kjv.txt
