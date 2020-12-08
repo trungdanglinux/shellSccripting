@@ -1,0 +1,30 @@
+#!/bin/bash
+##check the valid square
+valid_square(){
+ check_square=$1
+ checkedSquare=
+ case $check_square in 
+    a[1-8] | b[1-8] | c[1-8] | d[1-8] | e[1-8] | f[1-8] |\
+    g[1-8] | h[1-8]) checkedSquare="Valid" 
+                     return 0  ;;    
+    *) checkedSquare="Invalid" 
+        return 1;;
+ esac 
+ 
+}
+
+test_valid_square(){
+   printf "Testing function\n"
+   
+   for i in {a..i}
+       do
+       for j in {1..9}
+       do
+          valid_square "$i$j"
+          printf "  %s-%d %-7s " "$i" "$j" "$checkedSquare"
+          
+       done
+       echo 
+       
+    done
+ }
